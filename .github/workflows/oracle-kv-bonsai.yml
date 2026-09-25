@@ -1,0 +1,38 @@
+name: oracle-kv-bonsai
+on:
+  push:
+    branches: ['experiment/boundary-kv-bonsai']
+    paths:
+      - 'boundary-compression-lab/experiment_oracle_kv.py'
+      - 'boundary-compression-lab/requirements-bonsai.txt'
+      - '.github/workflows/oracle-kv-bonsai.yml'
+  workflow_dispatch:
+jobs:
+  oracle-kv:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      HF_HOME: /tmp/hf
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+      OMP_NUM_THREADS: '4'
+      MKL_NUM_THREADS: '4'
+      RECENT_TOKENS: '48'
+      MAX_PREFIX: '192'
+      TEST_CASES: '8'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install CPU PyTorch
+        run: python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+      - name: Install dependencies
+        run: python -m pip install -r boundary-compression-lab/requirements-bonsai.txt
+      - name: Run oracle KV retention sweep
+        run: python boundary-compression-lab/experiment_oracle_kv.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: oracle-kv-bonsai-results
+          path: boundary-compression-lab/results/
