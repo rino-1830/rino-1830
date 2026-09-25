@@ -1,4 +1,4 @@
-import gc, json, math, os, random, time
+import ctypes, gc, json, math, os, random, time
 from pathlib import Path
 import torch
 import torch.nn as nn
@@ -6,7 +6,7 @@ import torch.nn.functional as F
 from transformers import AutoModelForCausalLM, AutoTokenizer, DynamicCache
 
 MODEL_ID=os.environ.get("MODEL_ID","prism-ml/Bonsai-1.7B-unpacked")
-MODEL_DTYPE=torch.float16
+MODEL_DTYPE_NAME=os.environ.get("MODEL_DTYPE","float32")\nMODEL_DTYPE={"float32":torch.float32,"float16":torch.float16,"bfloat16":torch.bfloat16}[MODEL_DTYPE_NAME]
 OUT=Path(os.environ.get("RESULT_PATH","boundary-compression-lab/results/predictive_scorer.json"))
 CKPT=Path(os.environ.get("CKPT_PATH","boundary-compression-lab/results/predictive_scorer.pt"))
 RECENT=int(os.environ.get("RECENT_TOKENS","48"))
@@ -73,6 +73,14 @@ def prefill(model,ids,attn=False):
     return items,h,o.attentions
 
 @torch.no_grad()
+def trim_memory():
+    gc.collect()
+    try:
+        libc=ctypes.CDLL(None)
+        if hasattr(libc,"malloc_trim"): libc.malloc_trim(0)
+    except Exception:
+        pass
+
 def future_saliency(model,p):
     # Teacher only: future/recent queries -> old positions, aggregated across layers/heads.
     o=model(p,use_cache=False,output_attentions=True,return_dict=True)
