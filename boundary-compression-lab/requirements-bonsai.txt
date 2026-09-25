@@ -1,0 +1,4 @@
+transformers==4.57.6
+accelerate>=1.10,<2
+safetensors>=0.6
+huggingface_hub>=0.34
