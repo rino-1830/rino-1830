@@ -114,11 +114,11 @@ def cache_features(model, tok, prefix, target):
     old_ids = p[:, :old_len]
     recent_ids = p[:, old_len:]
     emb = model.get_input_embeddings()
-    raw_old = emb(old_ids).detach().float()
+    raw_old = emb(old_ids).detach().float().clone()
     recent_emb = emb(recent_ids).detach()
     target_emb = emb(t).detach()
     teacher = model(p, output_hidden_states=True, use_cache=False, return_dict=True)
-    contextual_old = teacher.hidden_states[-1][:, :old_len, :].detach().float()
+    contextual_old = teacher.hidden_states[-1][:, :old_len, :].detach().float().clone()
     return {
         "prefix_ids": p,
         "target_ids": t,
