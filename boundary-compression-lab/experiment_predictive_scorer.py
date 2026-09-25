@@ -1,11 +1,11 @@
-import json, math, os, random, time
+import gc, json, math, os, random, time
 from pathlib import Path
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from transformers import AutoModelForCausalLM, AutoTokenizer, DynamicCache
 
-MODEL_ID=os.environ.get("MODEL_ID","prism-ml/Bonsai-1.7B-unpacked")
+MODEL_ID=os.environ.get("MODEL_ID","prism-ml/Bonsai-1.7B-unpacked")\nMODEL_DTYPE=torch.float16
 OUT=Path(os.environ.get("RESULT_PATH","boundary-compression-lab/results/predictive_scorer.json"))
 CKPT=Path(os.environ.get("CKPT_PATH","boundary-compression-lab/results/predictive_scorer.pt"))
 RECENT=int(os.environ.get("RECENT_TOKENS","48"))
@@ -177,7 +177,7 @@ def summarize(rows):
 
 def main():
     start=time.time(); print("loading",MODEL_ID,flush=True)
-    model=AutoModelForCausalLM.from_pretrained(MODEL_ID,torch_dtype=torch.float32,low_cpu_mem_usage=True,attn_implementation="eager")
+    model=AutoModelForCausalLM.from_pretrained(MODEL_ID,torch_dtype=MODEL_DTYPE,low_cpu_mem_usage=True,attn_implementation="eager")
     model.eval()
     for p in model.parameters(): p.requires_grad_(False)
     tok=AutoTokenizer.from_pretrained(MODEL_ID); scorer=Scorer(int(model.config.hidden_size))
