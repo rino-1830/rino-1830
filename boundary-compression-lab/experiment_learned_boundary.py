@@ -107,7 +107,7 @@ class BoundaryEncoder(nn.Module):
         return memory, w
 
 
-@torch.inference_mode()
+@torch.no_grad()
 def cache_features(model, tok, prefix, target):
     p, t = encode_pair(tok, prefix, target)
     old_len = max(1, p.shape[1] - RECENT)
