@@ -1,0 +1,46 @@
+name: gradient-boundary-teacher
+on:
+  push:
+    branches: ['experiment/boundary-kv-bonsai']
+    paths:
+      - 'boundary-compression-lab/experiment_gradient_teacher.py'
+      - '.github/workflows/gradient-boundary-teacher.yml'
+      - 'boundary-compression-lab/requirements-bonsai.txt'
+  workflow_dispatch:
+jobs:
+  gradient-teacher:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      HF_HOME: /tmp/hf
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+      OMP_NUM_THREADS: '4'
+      MKL_NUM_THREADS: '4'
+      TORCH_THREADS: '4'
+      RECENT_TOKENS: '48'
+      MAX_PREFIX: '192'
+      SCORER_EPOCHS: '120'
+      SCORER_RANK: '64'
+      TRAIN_TABLES: '10'
+      BUDGETS: '8,16,24,32,48,64'
+      LR: '0.003'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: boundary-compression-lab/requirements-bonsai.txt
+      - name: Install CPU PyTorch
+        run: python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+      - name: Install dependencies
+        run: python -m pip install -r boundary-compression-lab/requirements-bonsai.txt
+      - name: Run gradient deletion teacher
+        run: python boundary-compression-lab/experiment_gradient_teacher.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gradient-boundary-teacher-results
+          path: boundary-compression-lab/results/
+          if-no-files-found: warn
