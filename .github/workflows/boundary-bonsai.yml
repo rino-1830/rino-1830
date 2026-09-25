@@ -3,7 +3,8 @@ on:
   push:
     branches: ['experiment/boundary-kv-bonsai']
     paths:
-      - 'boundary-compression-lab/**'
+      - 'boundary-compression-lab/experiment_bonsai.py'
+      - 'boundary-compression-lab/requirements-bonsai.txt'
       - '.github/workflows/boundary-bonsai.yml'
   workflow_dispatch:
 
