@@ -11,18 +11,24 @@ jobs:
   learned-kv-selector:
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        slots: [16, 24, 32]
     env:
       HF_HOME: /tmp/hf
       HF_HUB_DISABLE_TELEMETRY: '1'
       TOKENIZERS_PARALLELISM: 'false'
       OMP_NUM_THREADS: '4'
       MKL_NUM_THREADS: '4'
-      BOUNDARY_SLOTS: '16'
+      BOUNDARY_SLOTS: ${{ matrix.slots }}
       RECENT_TOKENS: '48'
       MAX_PREFIX: '192'
       TRAIN_STEPS: '96'
       BOUNDARY_RANK: '64'
       LR: '0.01'
+      RESULT_PATH: boundary-compression-lab/results/learned_kv_selector_slots_${{ matrix.slots }}.json
+      CKPT_PATH: boundary-compression-lab/results/learned_kv_selector_slots_${{ matrix.slots }}.pt
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -38,6 +44,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: learned-kv-selector-bonsai-results
+          name: learned-kv-selector-bonsai-slots-${{ matrix.slots }}
           path: boundary-compression-lab/results/
           if-no-files-found: warn
