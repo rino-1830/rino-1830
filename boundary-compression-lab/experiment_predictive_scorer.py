@@ -6,7 +6,8 @@ import torch.nn.functional as F
 from transformers import AutoModelForCausalLM, AutoTokenizer, DynamicCache
 
 MODEL_ID=os.environ.get("MODEL_ID","prism-ml/Bonsai-1.7B-unpacked")
-MODEL_DTYPE_NAME=os.environ.get("MODEL_DTYPE","float32")\nMODEL_DTYPE={"float32":torch.float32,"float16":torch.float16,"bfloat16":torch.bfloat16}[MODEL_DTYPE_NAME]
+MODEL_DTYPE_NAME=os.environ.get("MODEL_DTYPE","float32")
+MODEL_DTYPE={"float32":torch.float32,"float16":torch.float16,"bfloat16":torch.bfloat16}[MODEL_DTYPE_NAME]
 OUT=Path(os.environ.get("RESULT_PATH","boundary-compression-lab/results/predictive_scorer.json"))
 CKPT=Path(os.environ.get("CKPT_PATH","boundary-compression-lab/results/predictive_scorer.pt"))
 RECENT=int(os.environ.get("RECENT_TOKENS","48"))
