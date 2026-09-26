@@ -1,0 +1,100 @@
+{
+  "bonsai_segment_143": {
+    "full": {
+      "nll": 0.1771560792,
+      "exact": 0.4583333333
+    },
+    "block_48": {
+      "nll": 0.1305226031,
+      "exact": 0.6666666667
+    },
+    "block_64": {
+      "nll": 0.1118467926,
+      "exact": 0.7083333333
+    }
+  },
+  "learned_block_replication_143": {
+    "seeds": [
+      37,
+      41,
+      53
+    ],
+    "full_exact": 0.4583333333,
+    "recent_exact": 0.0416666667,
+    "learned_48_exact_mean": 0.3888888889,
+    "learned_48_exact_sd": 0.0240562612,
+    "learned_64_exact_mean": 0.5833333333,
+    "learned_64_exact_sd": 0.0721687836
+  },
+  "contiguous_region_oracle_512": {
+    "full": {
+      "nll": 0.1803808272,
+      "exact": 0.55
+    },
+    "recent": {
+      "nll": 0.7580506578,
+      "exact": 0.05
+    },
+    "region_48": {
+      "nll": 0.0802355328,
+      "exact": 0.75
+    },
+    "uniform_48": {
+      "nll": 1.2216749519,
+      "exact": 0
+    }
+  },
+  "multi_region_oracle_512": {
+    "full": {
+      "nll": 0.1475897106,
+      "exact": 0.55
+    },
+    "recent": {
+      "nll": 0.8816596434,
+      "exact": 0.05
+    },
+    "multi_region_48": {
+      "nll": 0.1352856051,
+      "exact": 0.6
+    },
+    "single_region_48": {
+      "nll": 0.8450403581,
+      "exact": 0.2
+    },
+    "uniform_48": {
+      "nll": 1.419002685,
+      "exact": 0
+    },
+    "multi_region_64": {
+      "nll": 0.1190499192,
+      "exact": 0.65
+    }
+  },
+  "short_to_long_learned_143_to_512": {
+    "full": {
+      "nll": 0.1908041283,
+      "exact": 0.65
+    },
+    "recent": {
+      "nll": 0.843238242,
+      "exact": 0
+    },
+    "learned_64": {
+      "nll": 0.4019651982,
+      "exact": 0.55
+    },
+    "learned_96": {
+      "nll": 0.1338840516,
+      "exact": 0.7
+    },
+    "oracle_96": {
+      "nll": 0.1336611631,
+      "exact": 0.7
+    },
+    "uniform_96": {
+      "nll": 0.9622849502,
+      "exact": 0.05
+    }
+  },
+  "note": "Synthetic retrieval controls. Values are not natural-language benchmark results; they test predictive-region KV compression mechanics."
+}
