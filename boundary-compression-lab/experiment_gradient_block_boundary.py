@@ -16,7 +16,7 @@ RANK=int(os.environ.get("SCORER_RANK","64"))
 LR=float(os.environ.get("LR","0.003"))
 TRAIN_TABLES=int(os.environ.get("TRAIN_TABLES","10"))
 BUDGETS=[16,24,32,48,64]
-SEED=37
+SEED=int(os.environ.get("SEED","37"))
 OUT.parent.mkdir(parents=True,exist_ok=True)
 torch.manual_seed(SEED); random.seed(SEED); torch.set_num_threads(min(4,os.cpu_count() or 1))
 LABELS=["ALPHA","BETA","GAMMA","DELTA"]
