@@ -1,0 +1,40 @@
+name: ternary-gradient-block-boundary
+on:
+  push:
+    branches: ['experiment/boundary-kv-bonsai']
+    paths:
+      - '.github/workflows/ternary-gradient-block-boundary.yml'
+  workflow_dispatch:
+jobs:
+  ternary-gradient-block:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      HF_HOME: /tmp/hf
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+      OMP_NUM_THREADS: '4'
+      MKL_NUM_THREADS: '4'
+      MODEL_ID: prism-ml/Ternary-Bonsai-1.7B-unpacked
+      SEED: '41'
+      TRAIN_TABLES: '10'
+      TEST_TABLES: '8'
+      TEST_BASE: '70'
+      RESULT_PATH: boundary-compression-lab/results/ternary_gradient_block_seed41.json
+      CKPT_PATH: boundary-compression-lab/results/ternary_gradient_block_seed41.pt
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: boundary-compression-lab/requirements-bonsai.txt
+      - run: python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+      - run: python -m pip install -r boundary-compression-lab/requirements-bonsai.txt
+      - run: python boundary-compression-lab/experiment_gradient_block_boundary.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ternary-gradient-block-boundary-seed41
+          path: boundary-compression-lab/results/
+          if-no-files-found: warn
