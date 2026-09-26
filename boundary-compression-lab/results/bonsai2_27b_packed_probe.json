@@ -1,0 +1,30 @@
+{
+  "model": "prism-ml/Ternary-Bonsai-2-27B-gguf / PTQ1_0",
+  "old_tokens": 256,
+  "recent_tokens": 32,
+  "persistent_old_tokens": 48,
+  "model_pack": "PTQ1_0 (~1.75 bits/weight, no runtime repack)",
+  "full": {
+    "nll": 0.211989,
+    "exact": 0.5,
+    "state_bytes": 173677100,
+    "kv_buffer_mib": 32,
+    "recurrent_state_mib": 149.62
+  },
+  "streaming_boundary": {
+    "nll": 0.169354,
+    "exact": 1,
+    "state_bytes": 160107008,
+    "kv_buffer_mib": 16,
+    "recurrent_state_mib": 149.62
+  },
+  "context_allocations": {
+    "full_cells": 512,
+    "stream_cells": 256
+  },
+  "caveats": [
+    "Four-query synthetic retrieval probe on one prefix; not a general language benchmark.",
+    "Boundary regions are oracle-selected from known fact spans in this packed-runtime probe.",
+    "Follow-up controls use different identifiers/positions and non-region eviction baselines."
+  ]
+}
