@@ -1,0 +1,46 @@
+name: context-harm-comparison
+on:
+  push:
+    branches: ['experiment/boundary-kv-bonsai']
+    paths:
+      - 'boundary-compression-lab/experiment_context_harm.py'
+      - '.github/workflows/context-harm-comparison.yml'
+  workflow_dispatch:
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - tag: qwen
+            model: Qwen/Qwen3-1.7B
+          - tag: bonsai
+            model: prism-ml/Bonsai-1.7B-unpacked
+          - tag: ternary
+            model: prism-ml/Ternary-Bonsai-1.7B-unpacked
+    env:
+      HF_HOME: /tmp/hf
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+      OMP_NUM_THREADS: '4'
+      MKL_NUM_THREADS: '4'
+      MODEL_ID: ${{ matrix.model }}
+      RESULT_PATH: boundary-compression-lab/results/context_harm_${{ matrix.tag }}.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: boundary-compression-lab/requirements-bonsai.txt
+      - run: python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+      - run: python -m pip install -r boundary-compression-lab/requirements-bonsai.txt datasets
+      - run: python boundary-compression-lab/experiment_context_harm.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: context-harm-${{ matrix.tag }}
+          path: boundary-compression-lab/results/
+          if-no-files-found: warn
