@@ -1,0 +1,103 @@
+{
+  "generated_at": "2026-09-27",
+  "bonsai_1_7b_unpacked": {
+    "random_position_segment": {
+      "full": {
+        "nll": 0.1771560792,
+        "exact": 0.4583333333
+      },
+      "block32": {
+        "nll": 0.4121699955,
+        "exact": 0.5416666667
+      },
+      "block48": {
+        "nll": 0.1305226031,
+        "exact": 0.6666666667
+      },
+      "block64": {
+        "nll": 0.1118467926,
+        "exact": 0.7083333333
+      }
+    },
+    "learned_gradient_block_3seed": {
+      "full_exact": 0.4583333333,
+      "learned64_exact_by_seed": [
+        0.5416666667,
+        0.6666666667,
+        0.5416666667
+      ]
+    },
+    "short_train_to_512": {
+      "full": {
+        "nll": 0.1908041283,
+        "exact": 0.65
+      },
+      "learned64": {
+        "nll": 0.4019651982,
+        "exact": 0.55
+      },
+      "learned96": {
+        "nll": 0.1338840516,
+        "exact": 0.7
+      }
+    },
+    "oracle_512_multiregion": {
+      "full": {
+        "nll": 0.1475897106,
+        "exact": 0.55
+      },
+      "multiregion48": {
+        "nll": 0.1352856051,
+        "exact": 0.6
+      },
+      "multiregion64": {
+        "nll": 0.1190499192,
+        "exact": 0.65
+      }
+    }
+  },
+  "packed_runtime": {
+    "q1_0_1_7b": {
+      "posthoc_multi48": {
+        "full_nll": 0.152919,
+        "full_exact": 0.583333,
+        "multi_nll": 0.196095,
+        "multi_exact": 0.416667
+      },
+      "fixed_cache48": {
+        "full_nll": 0.152919,
+        "full_exact": 0.583333,
+        "stream_nll": 0.477135,
+        "stream_exact": 0.416667,
+        "full_kv_mib": 84,
+        "stream_kv_mib": 28
+      },
+      "fixed_cache64": {
+        "stream_nll": 0.356009,
+        "stream_exact": 0.416667,
+        "stream_kv_mib": 28
+      },
+      "fixed_cache96": {
+        "stream_nll": 0.313595,
+        "stream_exact": 0.333333,
+        "stream_kv_mib": 28
+      }
+    },
+    "ternary_bonsai_1_7b_pq2_0": {
+      "fixed_cache64": {
+        "full_nll": 0.0880496,
+        "full_exact": 0.666667,
+        "stream_nll": 0.156347,
+        "stream_exact": 0.583333,
+        "full_kv_mib": 84,
+        "stream_kv_mib": 28
+      }
+    }
+  },
+  "notes": [
+    "Synthetic retrieval benchmark with four identifiers placed in separated old-context regions.",
+    "Streaming cache keeps selected old regions plus the latest anchor while processing old context in chunks.",
+    "llama.cpp rounds requested contexts to 256-cell multiples in these 1.7B runs.",
+    "Bonsai 2 27B PTQ1_0 probe is intentionally recorded separately when complete."
+  ]
+}
