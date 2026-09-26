@@ -174,8 +174,6 @@ def main():
     sm={"full":{"nll":avg(["full","nll"]),"exact":avg(["full","exact"])},
         "recent":{"nll":avg(["recent","nll"]),"exact":avg(["recent","exact"])}}
     for b in BUDGETS:
-        sm[str(b]]={}
-    for b in BUDGETS:
         sm[str(b)]={}
         for m in ["learned","oracle","uniform"]:
             sm[str(b)][m]={"nll":avg(["budgets",str(b),m,"metrics","nll"]),"exact":avg(["budgets",str(b),m,"metrics","exact"])}
